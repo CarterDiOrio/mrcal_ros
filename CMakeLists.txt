@@ -7,9 +7,30 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-# uncomment the following section in order to fill in
-# further dependencies manually.
-# find_package(<dependency> REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(rclcpp_components REQUIRED)
+find_package(sensor_msgs REQUIRED)
+find_package(OpenCV REQUIRED COMPONENTS core imgproc)
+find_library(MRCAL_LIB mrcal HINTS /usr/lib/x86_64-linux-gnu)
+
+add_library(mrcal_ros_component src/mrcal_node.cpp)
+ament_target_dependencies(mrcal_ros_component rclcpp 
+                                              std_msgs
+                                              sensor_msgs 
+                                              rclcpp_components)
+target_link_libraries(mrcal_ros_component opencv_core opencv_imgproc ${MRCAL_LIB})
+
+rclcpp_components_register_node(
+  mrcal_ros_component
+  PLUGIN "mrcal_ros::MrCal"
+  EXECUTABLE mrcal_ros
+)
+
+target_include_directories(mrcal_ros_component
+  PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/>
+  $<INSTALL_INTERFACE:include/>)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
