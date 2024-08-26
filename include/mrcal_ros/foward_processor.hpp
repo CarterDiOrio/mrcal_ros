@@ -7,10 +7,12 @@
 
 #include "mrcal_ros/mrcal_image_processing.hpp"
 
-namespace mrcal_ros {
+namespace mrcal_ros
+{
 
 /// @brief Forwards the img with intrinsics, but no processing
-class ForwardProcessor : public IMrCalProcessor {
+class ForwardProcessor : public IMrCalProcessor
+{
 public:
   /// @brief Constructor
   /// @param model The model to publish camera info for

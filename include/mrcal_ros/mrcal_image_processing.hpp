@@ -16,14 +16,17 @@ extern "C" {
 #include <mrcal/mrcal.h>
 }
 
-namespace mrcal_ros {
+namespace mrcal_ros
+{
 
-struct ImgSensorData {
+struct ImgSensorData
+{
   sensor_msgs::msg::CameraInfo info;
-  sensor_msgs::msg::Image image;
+  std::shared_ptr<sensor_msgs::msg::Image const> image;
 };
 
-class IMrCalProcessor {
+class IMrCalProcessor
+{
 public:
   virtual ImgSensorData
   process(sensor_msgs::msg::Image::ConstSharedPtr img) = 0;

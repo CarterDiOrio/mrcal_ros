@@ -11,14 +11,18 @@ find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(rclcpp_components REQUIRED)
 find_package(sensor_msgs REQUIRED)
+find_package(cv_bridge REQUIRED)
 find_package(OpenCV REQUIRED COMPONENTS core imgproc)
 find_library(MRCAL_LIB mrcal HINTS /usr/lib/x86_64-linux-gnu)
 
-add_library(mrcal_ros_component src/mrcal_node.cpp)
+add_library(mrcal_ros_component src/mrcal_node.cpp
+                                src/reprojection_processor.cpp
+                                src/forward_processor.cpp)
 ament_target_dependencies(mrcal_ros_component rclcpp 
                                               std_msgs
                                               sensor_msgs 
-                                              rclcpp_components)
+                                              rclcpp_components
+                                              cv_bridge)
 target_link_libraries(mrcal_ros_component opencv_core opencv_imgproc ${MRCAL_LIB})
 
 rclcpp_components_register_node(
